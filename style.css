@@ -108,15 +108,6 @@ body {
     overflow: auto;
 }
 
-.cart-item-image {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: #E0E0E0 1px solid;
-    padding: 5px;
-    vertical-align: middle;
-    margin-right: 15px;
-}
 .no-records {
     text-align: center;
     clear: both;

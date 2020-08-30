@@ -124,8 +124,10 @@ if(!empty($_GET["action"])) {
             <div class="product-item">
                 <form method="POST" action="index.php?action=add&name=<?php echo $product_array[$key]["name"]; ?>">
                     <div class="product-tile-footer">
-                        <div class="product-title"><?php echo $product_array[$key]["name"]; ?></div>
-                        <div class="product-price"><?php echo "$".number_format($product_array[$key]["price"],2); ?></div>
+                        <div class="product-title"><?php echo $product_array[$key]["name"]." "; ?></div>
+                        <div class="product-price"><?php echo "$".number_format($product_array[$key]["price"],2)." "; ?></div>
+                        <br>
+                        <br>
                         <div class="cart-action">
                             <input type="number" min="1" name="quantity" class="product-quantity"  value="1" size="2" />
                             <input type="submit" value="Add to Cart"  class="btnAddAction" />
