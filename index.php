@@ -6,18 +6,12 @@ $cart = new Cart();
 if(!empty($_GET["action"])) {
     switch($_GET["action"]) {
         case "add":
-            if(!empty($_POST["quantity"])) {
+            if(!empty($_POST["quantity"] && (int)$_POST["quantity"] >= 1)) {
                 $productByName = $cart->GetProductByName($_GET["name"]);
                 $item_array = array(
                     "name" => $productByName["name"],
                     "price" => $productByName["price"],
                     "quantity" => $_POST["quantity"]);
-
-                ?>
-                <li><?php echo $item_array['name'];?></li>
-                <li><?php echo $item_array['price'];?></li>
-                <li><?php echo $item_array['quantity'];?></li>
-                <?php
 
                 if (!empty($_SESSION["cart_item"])) {
                     if (In_array($item_array["name"], array_column($_SESSION["cart_item"],"name"))) {
@@ -26,17 +20,11 @@ if(!empty($_GET["action"])) {
                             $_SESSION["cart_item"][$index]["quantity"] = $item_array["quantity"];
                         }
                         $_SESSION["cart_item"][$index]["quantity"] += (int)$item_array["quantity"];
-                        $st = array_column($_SESSION["cart_item"],"quantity","name");
-                        print_r($st);
                     } else {
                         array_push($_SESSION["cart_item"], $item_array);
-                        $st = array_column($_SESSION["cart_item"],"quantity","name");
-                        print_r($st);
                     }
                 } else {
                     $_SESSION["cart_item"] = array($item_array);
-                    $st = array_column($_SESSION["cart_item"],"quantity","name");
-                    print_r($st);
                 }
             }
             break;
@@ -45,12 +33,6 @@ if(!empty($_GET["action"])) {
             break;
         case "remove":
             if(!empty($_SESSION["cart_item"])) {
-                ?><li>
-                <?php
-                $st = array_column($_SESSION["cart_item"],"name");
-                print_r($st);
-                ?>
-                </li><?php
                 if (count($_SESSION["cart_item"])==1) {
                     unset($_SESSION["cart_item"]);
                 }
@@ -60,14 +42,6 @@ if(!empty($_GET["action"])) {
                         array_splice($_SESSION["cart_item"],$index,1);
                         if(empty($_SESSION["cart_item"]))
                             unset($_SESSION["cart_item"]);
-                        ?><li>
-                        <?php
-                        if (isset($_SESSION["cart_item"])) {
-                            $st = array_column($_SESSION["cart_item"],"name");
-                            print_r($st);
-                        }
-                        ?>
-                        </li><?php
                     }
                 }
             }
@@ -149,12 +123,11 @@ if(!empty($_GET["action"])) {
             ?>
             <div class="product-item">
                 <form method="POST" action="index.php?action=add&name=<?php echo $product_array[$key]["name"]; ?>">
-<!--                    <div class="product-image"><img src="--><?php //echo $product_array[$key]["image"]; ?><!--"></div>-->
                     <div class="product-tile-footer">
                         <div class="product-title"><?php echo $product_array[$key]["name"]; ?></div>
                         <div class="product-price"><?php echo "$".number_format($product_array[$key]["price"],2); ?></div>
                         <div class="cart-action">
-                            <input type="text" name="quantity" class="product-quantity"  value="1" size="2" />
+                            <input type="number" min="1" name="quantity" class="product-quantity"  value="1" size="2" />
                             <input type="submit" value="Add to Cart"  class="btnAddAction" />
                         </div>
                     </div>
